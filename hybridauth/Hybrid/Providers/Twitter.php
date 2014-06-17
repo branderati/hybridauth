@@ -191,13 +191,14 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
 	*/ 
 	function setUserStatus( $status )
 	{
-		$parameters = array( 'status' => $status ); 
+		$parameters = array( 'status' => $status );
 		$response  = $this->api->post( 'statuses/update.json', $parameters ); 
 
 		// check the last HTTP status code returned
 		if ( $this->api->http_code != 200 ){
 			throw new Exception( "Update user status failed! {$this->providerId} returned an error. " . $this->errorMessageByStatus( $this->api->http_code ) );
 		}
+        return $response;
  	}
 
 	/**

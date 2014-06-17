@@ -260,6 +260,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
 
 		try{ 
 			$response = $this->api->api( "/me/feed", "post", $parameters );
+            return $response;
 		}
 		catch( FacebookApiException $e ){
 			throw new Exception( "Update user status failed! {$this->providerId} returned an error: $e" );
