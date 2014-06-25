@@ -90,7 +90,7 @@ class Hybrid_Providers_LinkedIn extends Hybrid_Provider_Model
 	{
 		try{
 			// http://developer.linkedin.com/docs/DOC-1061
-			$response = $this->api->profile('~:(id,first-name,last-name,public-profile-url,picture-url,email-address,date-of-birth,phone-numbers,summary)');
+			$response = $this->api->profile('~:(id,first-name,last-name,public-profile-url,picture-url,email-address,date-of-birth,phone-numbers,summary,positions)');
 		}
 		catch( LinkedInException $e ){
 			throw new Exception( "User profile request failed! {$this->providerId} returned an error: $e", 6 );
@@ -114,6 +114,7 @@ class Hybrid_Providers_LinkedIn extends Hybrid_Provider_Model
 			$this->user->profile->photoURL    = (string) $data->{'picture-url'};
 			$this->user->profile->profileURL  = (string) $data->{'public-profile-url'};
 			$this->user->profile->description = (string) $data->{'summary'};
+            $this->user->profile->positions = (array)$data->{'positions'};
 
 			if( $data->{'phone-numbers'} && $data->{'phone-numbers'}->{'phone-number'} ){
 				$this->user->profile->phone = (string) $data->{'phone-numbers'}->{'phone-number'}->{'phone-number'};
