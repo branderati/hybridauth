@@ -198,7 +198,7 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
 			$status = $message['status'];
 		}
 		else{
-			throw new Exception( "Update user status failed! {$this->providerId} returned an error. Invalid data given" ) );
+			throw new Exception( "Update user status failed! {$this->providerId} returned an error. Invalid data given" );
 		}
 		$parameters = array( 'status' => $message['status'] );
 		$response  = $this->api->post( 'statuses/update.json', $parameters ); 
