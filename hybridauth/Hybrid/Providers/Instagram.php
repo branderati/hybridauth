@@ -36,9 +36,18 @@ class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
 			throw new Exception( "User profile request failed! {$this->providerId} returned an invalid response.", 6 );
 		}
 
-		$this->user->profile->identifier  = $data->data->id; 
-		$this->user->profile->displayName = $data->data->full_name ? $data->data->full_name : $data->data->username; 
-		$this->user->profile->description = $data->data->bio;
+		$this->user->profile->identifier  = $data->data->id;
+
+    $counts = (array) $data->data->counts;
+
+    $this->user->profile->number_of_followers = $counts["followed_by"];
+
+		$this->user->profile->displayName = $data->data->full_name ? $data->data->full_name : $data->data->username;
+    $nameBreak = explode(" ",$this->user->profile->displayName);
+    $this->user->profile->firstName = $nameBreak[0];
+    if (count($nameBreak) > 1)
+      $this->user->profile->lastName = $nameBreak[1];
+    $this->user->profile->description = $data->data->bio;
 		$this->user->profile->photoURL    = $data->data->profile_picture;
 
 		$this->user->profile->webSiteURL  = $data->data->website; 
