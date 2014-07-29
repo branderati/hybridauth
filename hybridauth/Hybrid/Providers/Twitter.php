@@ -188,29 +188,30 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
 
 	/**
 	* update user status
-	*/ 
-	function setUserStatus( $status )
-	{
-		if( is_array( $status ) ){
-			$parameters = $status;		
-			if (empty($status["media"])) 
-				$response  = $this->api->post( 'statuses/update.json', $parameters ); 
-			else
-				$response  = $this->api->post( 'statuses/update_with_media.json', $parameters ); 
-		}
-		else{
-			$parameters["status"] = $status; 
-			$response  = $this->api->post( 'statuses/update.json', $parameters ); 
-		}
-		
-		// check the last HTTP status code returned
-		if ( $this->api->http_code != 200 ){
-			throw new Exception( "Update user status failed! {$this->providerId} returned an error. " . $this->errorMessageByStatus( $this->api->http_code ) );
-		}
-        return $response;
- 	}
+	*/
+    function setUserStatus( $status )
+    {
+        if( is_array( $status ) ){
+            $parameters = $status;
+            if (empty($status["media"]))
+                $response  = $this->api->post( 'statuses/update.json', $parameters );
+            else
+                $response  = $this->api->post( 'statuses/update_with_media.json', $parameters );
+        }
+        else{
+            $parameters["status"] = $status;
+            $response  = $this->api->post( 'statuses/update.json', $parameters );
+        }
 
-	/**
+        // check the last HTTP status code returned
+        if ( $this->api->http_code != 200 ){
+            throw new Exception( "Update user status failed! {$this->providerId} returned an error. " . $this->errorMessageByStatus( $this->api->http_code ) );
+        }
+        return $response;
+    }
+
+
+    /**
 	* load the user latest activity  
 	*    - timeline : all the stream
 	*    - me       : the user activity only  
