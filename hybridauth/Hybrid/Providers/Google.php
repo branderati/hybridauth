@@ -110,6 +110,10 @@ class Hybrid_Providers_Google extends Hybrid_Provider_Model_OAuth2
 		$this->user->profile->country 		= (property_exists($response,'country'))?$response->country:"";
 		$this->user->profile->region 		= (property_exists($response,'region'))?$response->region:"";
 		$this->user->profile->zip	 		= (property_exists($response,'zip'))?$response->zip:"";
+
+    $contacts = self::getUserContacts();
+    $this->user->profile->number_of_contacts = count($contacts);
+
 		if( property_exists($response,'placesLived') ){
 			$this->user->profile->city 	= ""; 
 			$this->user->profile->address	= ""; 
