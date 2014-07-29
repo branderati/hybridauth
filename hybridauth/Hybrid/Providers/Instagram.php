@@ -40,7 +40,7 @@ class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
 
     $counts = (array) $data->data->counts;
 
-    $this->user->profile->number_of_followers = $counts["followed_by"];
+    $this->user->profile->reach = $counts["followed_by"];
 
 		$this->user->profile->displayName = $data->data->full_name ? $data->data->full_name : $data->data->username;
     $nameBreak = explode(" ",$this->user->profile->displayName);
