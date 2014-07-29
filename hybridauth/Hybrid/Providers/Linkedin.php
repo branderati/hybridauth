@@ -114,7 +114,7 @@ class Hybrid_Providers_LinkedIn extends Hybrid_Provider_Model
 			$this->user->profile->photoURL    = (string) $data->{'picture-url'};
 			$this->user->profile->profileURL  = (string) $data->{'public-profile-url'};
 			$this->user->profile->description = (string) $data->{'summary'};
-      $this->user->profile->number_of_connections = (int) $data->{'num-connections'}[0];
+      $this->user->profile->reach = (int) $data->{'num-connections'}[0];
 
 			if( $data->{'phone-numbers'} && $data->{'phone-numbers'}->{'phone-number'} ){
 				$this->user->profile->phone = (string) $data->{'phone-numbers'}->{'phone-number'}->{'phone-number'};
