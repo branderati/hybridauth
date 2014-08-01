@@ -193,10 +193,12 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
     {
         if( is_array( $status ) ){
             $parameters = $status;
-            if (empty($status["media"]))
-                $response  = $this->api->post( 'statuses/update.json', $parameters );
-            else
-                $response  = $this->api->post( 'statuses/update_with_media.json', $parameters );
+//            if (empty($status["media"]))
+//                $response  = $this->api->post( 'statuses/update.json', $parameters );
+//            else
+//                $response  = $this->api->post( 'statuses/update_with_media.json', $parameters );
+
+            $response  = $this->api->post( 'statuses/update.json', $parameters );
         }
         else{
             $parameters["status"] = $status;
