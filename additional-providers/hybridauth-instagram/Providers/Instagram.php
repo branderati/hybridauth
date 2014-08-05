@@ -39,7 +39,7 @@ class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
 
         $this->user->profile->reach = $counts["followed_by"];
         $this->user->profile->profileURL = "https://instagram.com/" . $data->data->username;
-        
+
 		$this->user->profile->identifier  = $data->data->id; 
 		$this->user->profile->displayName = $data->data->full_name ? $data->data->full_name : $data->data->username; 
 		$this->user->profile->description = $data->data->bio;

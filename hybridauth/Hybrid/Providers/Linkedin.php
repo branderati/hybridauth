@@ -91,7 +91,7 @@ class Hybrid_Providers_LinkedIn extends Hybrid_Provider_Model
     {
         try{
             // http://developer.linkedin.com/docs/DOC-1061
-            $response = $this->api->profile('~:(id,first-name,last-name,public-profile-url,picture-url,email-address,date-of-birth,phone-numbers,summary)');
+            $response = $this->api->profile('~:(id,first-name,last-name,public-profile-url,picture-url,email-address,date-of-birth,phone-numbers,summary,num-connections,positions)');
         }
         catch( LinkedInException $e ){
             throw new Exception( "User profile request failed! {$this->providerId} returned an error: $e", 6 );
