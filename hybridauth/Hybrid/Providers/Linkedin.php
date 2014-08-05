@@ -184,10 +184,10 @@ class Hybrid_Providers_LinkedIn extends Hybrid_Provider_Model
         $private    = true; // share with your connections only
 
         if( is_array( $status ) ){
-            if( isset( $status[0] ) && ! empty( $status[0] ) ) $parameters["title"]               = $status[0]; // post title
-            if( isset( $status[1] ) && ! empty( $status[1] ) ) $parameters["message"]             = $status[1]; // post comment
-            if( isset( $status[2] ) && ! empty( $status[2] ) ) $parameters["link"]       = $status[2]; // post url
-            if( isset( $status[3] ) && ! empty( $status[3] ) ) $parameters["picture"] = $status[3]; // post picture url
+            if( isset( $status['title'] ) && ! empty( $status['title'] ) ) $parameters["title"]               = $status['title']; // post title
+            if( isset( $status['message'] ) && ! empty( $status['message'] ) ) $parameters["comment"]             = $status['message']; // post comment
+            if( isset( $status['link'] ) && ! empty( $status['link'] ) ) $parameters["submitted-url"]       = $status['link']; // post url
+            if( isset( $status['picture'] ) && ! empty( $status['picture'] ) ) $parameters["submitted-image-url"] = $status['picture']; // post picture url
             if( isset( $status[4] ) && ! empty( $status[4] ) ) $private                           = $status[4]; // true or false
         }
         else{
