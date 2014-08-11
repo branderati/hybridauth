@@ -6,49 +6,82 @@
 */
 
 /**
-* Hybrid_Providers_Instagram (By Sebastian Lasse - https://github.com/sebilasse)
-*/
+ * Hybrid_Providers_Instagram (By Sebastian Lasse - https://github.com/sebilasse)
+ */
 class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
-{ 
-	// default permissions   
-	public $scope = "basic"; 
+{
+    // default permissions
+    public $scope = "basic";
 
-	/**
-	* IDp wrappers initializer 
-	*/
-	function initialize()
-	{
-		parent::initialize();
+    /**
+     * IDp wrappers initializer
+     */
+    function initialize() {
+        parent::initialize();
 
-		// Provider api end-points
-		$this->api->api_base_url  = "https://api.instagram.com/v1/";
-		$this->api->authorize_url = "https://api.instagram.com/oauth/authorize/";
-		$this->api->token_url     = "https://api.instagram.com/oauth/access_token";
-	}
+        // Provider api end-points
+        $this->api->api_base_url = "https://api.instagram.com/v1/";
+        $this->api->authorize_url = "https://api.instagram.com/oauth/authorize/";
+        $this->api->token_url = "https://api.instagram.com/oauth/access_token";
+    }
 
-	/**
-	* load the user profile from the IDp api client
-	*/
-	function getUserProfile(){ 
-		$data = $this->api->api("users/self/" ); 
+    /**
+     * load the user profile from the IDp api client
+     */
+    function getUserProfile() {
+        $response = $this->api->api("users/self/");
 
-		if ( $data->meta->code != 200 ){
-			throw new Exception( "User profile request failed! {$this->providerId} returned an invalid response.", 6 );
-		}
-        $counts = (array)$data->data->counts;
+        if ($response->meta->code != 200) {
+            throw new Exception("User profile request failed! {$this->providerId} returned an invalid response.", 6);
+        }
+        $counts = (array)$response->data->counts;
 
         $this->user->profile->reach = $counts["followed_by"];
-        $this->user->profile->profileURL = "https://instagram.com/" . $data->data->username;
-        
-		$this->user->profile->identifier  = $data->data->id; 
-		$this->user->profile->displayName = $data->data->full_name ? $data->data->full_name : $data->data->username; 
-		$this->user->profile->description = $data->data->bio;
-		$this->user->profile->photoURL    = $data->data->profile_picture;
+        $this->user->profile->profileURL = "https://instagram.com/" . $response->data->username;
 
-		$this->user->profile->webSiteURL  = $data->data->website; 
-		
-		$this->user->profile->username    = $data->data->username;	
+        $this->user->profile->identifier = $response->data->id;
+        $this->user->profile->displayName = $response->data->full_name ? $response->data->full_name : $response->data->username;
+        $this->user->profile->description = $response->data->bio;
+        $this->user->profile->photoURL = $response->data->profile_picture;
 
-		return $this->user->profile;
-	}
+        $this->user->profile->webSiteURL = $response->data->website;
+
+        $this->user->profile->username = $response->data->username;
+
+        return $this->user->profile;
+    }
+
+    function getUserActivity($stream) {
+
+        if ($stream !== "me") {
+            return false;
+        }
+
+        $response = $this->api->api("users/self/feed");
+
+        if ($response->meta->code != 200) {
+            throw new Exception("User profile request failed! {$this->providerId} returned an invalid response.", 6);
+        }
+
+        if (!$response) {
+            return false;
+        }
+
+        return $response->data;
+    }
+
+    function search($tag) {
+
+        $response = $this->api->api("/tags/".$tag."/media/recent");
+
+        if ($response->meta->code != 200) {
+            throw new Exception("User profile request failed! {$this->providerId} returned an invalid response.", 6);
+        }
+
+        if (!$response) {
+            return false;
+        }
+
+        return $response->data;
+    }
 }

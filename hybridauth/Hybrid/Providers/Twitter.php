@@ -268,4 +268,19 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
 
 		return $activities;
  	}
+
+    function search($tag) {
+
+        $response = $this->api->api("search/tweets.json?q=".$tag);
+
+        if ($response->meta->code != 200) {
+            throw new Exception("User profile request failed! {$this->providerId} returned an invalid response.", 6);
+        }
+
+        if (!$response) {
+            return false;
+        }
+
+        return $response->data;
+    }
 }

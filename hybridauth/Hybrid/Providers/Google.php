@@ -254,6 +254,7 @@ class Hybrid_Providers_Google extends Hybrid_Provider_Model_OAuth2
 		return $contacts;
  	}
 
+
 	/**
 	 * Add to the $url new parameters
 	 * @param string $url

@@ -217,7 +217,11 @@ class Hybrid_Auth
 
 			$provider_adapter = Hybrid_Auth::setup( $providerId, $params );
 
-			$provider_adapter->login();
+			$adapter = $provider_adapter->login();
+
+            if ($adapter){
+                return $adapter;
+            }
 		}
 
 		// else, then return the adapter instance for the given provider
