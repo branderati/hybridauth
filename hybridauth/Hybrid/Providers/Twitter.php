@@ -237,7 +237,7 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
 			$response  = $this->api->get( 'statuses/user_timeline.json' ); 
 		}                                                          
 		else{
-			$response  = $this->api->get( 'statuses/home_timeline.json' ); 
+			$response  = $this->api->get( 'statuses/user_timeline.json?screen_name='.$stream.'&include_rts=false' );
 		}
 
 		// check the last HTTP status code returned
