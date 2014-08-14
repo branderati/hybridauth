@@ -257,6 +257,11 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
 			$ua->id                 = (property_exists($item,'id'))?$item->id:"";
 			$ua->date               = (property_exists($item,'created_at'))?strtotime($item->created_at):"";
 			$ua->text               = (property_exists($item,'text'))?$item->text:"";
+            $ua->geo                = (property_exists($item,'geo'))?$item->geo:"";
+            $ua->coordinates        = (property_exists($item,'coordinates'))?$item->coordinates:"";
+            $ua->retweets           = (property_exists($item,'retweet_count'))?$item->retweet_count:"";
+            $ua->favorites          = (property_exists($item,'favorite_count'))?$item->favorite_count:"";
+            $ua->text               = (property_exists($item,'text'))?$item->text:"";
 
 			$ua->user->identifier   = (property_exists($item->user,'id'))?$item->user->id:"";
 			$ua->user->displayName  = (property_exists($item->user,'name'))?$item->user->name:""; 
@@ -273,7 +278,7 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
 
         $response = $this->api->api("search/tweets.json?q=".$tag);
 
-        if ($response->meta->code != 200) {
+        if (!$response->statuses) {
             throw new Exception("User profile request failed! {$this->providerId} returned an invalid response.", 6);
         }
 
@@ -281,6 +286,6 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
             return false;
         }
 
-        return $response->data;
+        return $response->statuses;
     }
 }

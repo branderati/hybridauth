@@ -372,8 +372,11 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
         if ($query['until'] > $lastMonth) {
             $response = $this->api->api($endpoint);
             $posts = $this->createPosts($response['data']);
-            if (isset($response['paging']['next'])){
+            if (isset($response['paging']['next']) && is_array($posts)){
                 $posts = $this->getPage($response['paging']['next'], $posts);
+            }
+            if (!is_array($posts)){
+                return $data;
             }
             $data = array_merge($data, $posts);
         }
@@ -406,6 +409,14 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
 
             if (empty($ua->text) && isset($item["message"])) {
                 $ua->text = (array_key_exists("message", $item)) ? $item["message"] : "";
+            }
+
+            if (isset($item["likes"])) {
+                $ua->likes = count($item['likes']['data']);
+                $ua->likes_users = $item['likes']['data'];
+            }
+            else{
+                $ua->likes = 0;
             }
 
             if (!empty($ua->text)) {
