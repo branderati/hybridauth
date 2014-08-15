@@ -192,6 +192,13 @@ abstract class Hybrid_Provider_Model
 		throw new Exception( "Provider does not support this feature.", 8 ); 
 	}
 
+    function search( $term )
+    {
+        Hybrid_Logger::error( "HybridAuth do not provide user's status for {$this->providerId} yet." );
+
+        return false;
+    }
+
 	// --------------------------------------------------------------------
 
 	/**

@@ -47,7 +47,7 @@ class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
         $this->user->profile->webSiteURL = $response->data->website;
 
         $this->user->profile->username = $response->data->username;
-
+        $this->user->profile->displayName = $response->data->full_name;
         return $this->user->profile;
     }
 
@@ -73,7 +73,6 @@ class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
     function search($tag) {
         $countInfo = $this->api->api("/tags/".$tag);
         $count = $countInfo->data->media_count;
-        print $tag.": ".$count.PHP_EOL;
         $response = $this->api->api("/tags/".$tag."/media/recent");
 
         if ($response->meta->code != 200) {

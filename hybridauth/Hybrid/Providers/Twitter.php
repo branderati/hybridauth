@@ -249,43 +249,44 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
 			return ARRAY();
 		}
 
-		$activities = ARRAY();
+		$activities = $this->createPosts($response);
 
-		foreach( $response as $item ){
-			$ua = new Hybrid_User_Activity();
 
-			$ua->id                 = (property_exists($item,'id'))?$item->id:"";
-			$ua->date               = (property_exists($item,'created_at'))?strtotime($item->created_at):"";
-			$ua->text               = (property_exists($item,'text'))?$item->text:"";
-            $ua->geo                = (property_exists($item,'geo'))?$item->geo:"";
-            $ua->coordinates        = (property_exists($item,'coordinates'))?$item->coordinates:"";
-            $ua->retweets           = (property_exists($item,'retweet_count'))?$item->retweet_count:"";
-            $ua->favorites          = (property_exists($item,'favorite_count'))?$item->favorite_count:"";
-            $ua->text               = (property_exists($item,'text'))?$item->text:"";
-
-			$ua->user->identifier   = (property_exists($item->user,'id'))?$item->user->id:"";
-			$ua->user->displayName  = (property_exists($item->user,'name'))?$item->user->name:""; 
-			$ua->user->profileURL   = (property_exists($item->user,'screen_name'))?("http://twitter.com/".$item->user->screen_name):"";
-			$ua->user->photoURL     = (property_exists($item->user,'profile_image_url'))?$item->user->profile_image_url:"";
-			
-			$activities[] = $ua;
-		}
 
 		return $activities;
  	}
 
     function search($tag) {
-
         $response = $this->api->api("search/tweets.json?q=".$tag);
 
-        if (!$response->statuses) {
-            throw new Exception("User profile request failed! {$this->providerId} returned an invalid response.", 6);
-        }
-
-        if (!$response) {
+        if (!$response || !$response->statuses) {
             return false;
         }
+        $response = $this-> createPosts($response->statuses);
+        return $response;
+    }
 
-        return $response->statuses;
+    function createPosts($response){
+        $activities = [];
+        foreach( $response as $item ){
+            $ua = new Hybrid_User_Activity();
+
+            $ua->id                 = (property_exists($item,'id'))?$item->id:"";
+            $ua->date               = (property_exists($item,'created_at'))?strtotime($item->created_at):"";
+            $ua->text               = (property_exists($item,'text'))?$item->text:"";
+            $ua->geo                = (property_exists($item,'geo'))?$item->geo:"";
+            $ua->coordinates        = (property_exists($item,'coordinates'))?$item->coordinates:"";
+            $ua->retweets           = (property_exists($item,'retweet_count'))?$item->retweet_count:"";
+            $ua->favorites          = (property_exists($item,'favorite_count'))?$item->favorite_count:"";
+            $ua->text               = (property_exists($item,'text'))?$item->text:"";
+            $ua->media = (isset($response->statuses[0]->entities->media[0]->media_url)? $response->statuses[0]->entities->media[0]->media_url: NULL);
+            $ua->user->identifier   = (property_exists($item->user,'id'))?$item->user->id:"";
+            $ua->user->displayName  = (property_exists($item->user,'name'))?$item->user->name:"";
+            $ua->user->profileURL   = (property_exists($item->user,'screen_name'))?("http://twitter.com/".$item->user->screen_name):"";
+            $ua->user->photoURL     = (property_exists($item->user,'profile_image_url'))?$item->user->profile_image_url:"";
+
+            $activities[] = $ua;
+        }
+        return $activities;
     }
 }

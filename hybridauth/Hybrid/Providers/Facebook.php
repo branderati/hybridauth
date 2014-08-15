@@ -357,7 +357,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
 
 
 
-        if (isset($response['paging']['next'])) {
+        if (isset($response['paging']['next']) && is_array($activities)) {
             $activities = $this->getPage($response['paging']['next'], $activities);
         }
         return $activities;
@@ -384,12 +384,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
     }
 
     private function createPosts($data){
-        $stream = 'me';
         foreach ($data as $item) {
-            if ($stream == "me" && $item["from"]["id"] != $this->api->getUser()) {
-                continue;
-            }
-
             $ua = new Hybrid_User_Activity();
 
             $ua->id = (array_key_exists("id", $item)) ? $item["id"] : "";
@@ -410,7 +405,9 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
             if (empty($ua->text) && isset($item["message"])) {
                 $ua->text = (array_key_exists("message", $item)) ? $item["message"] : "";
             }
-
+            if (isset($item['picture'])){
+                $ua->media = $item['picture'];
+            }
             if (isset($item["likes"])) {
                 $ua->likes = count($item['likes']['data']);
                 $ua->likes_users = $item['likes']['data'];
@@ -429,5 +426,16 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
             }
         }
         return $activities;
+    }
+
+    public function search($term){
+        $term = urlencode($term);
+        try {
+            $postinfo = $this->api->api("/search?q=".$term."&type=post&limit=500");
+        } catch (FacebookApiException $e) {
+            return false;
+        }
+        $result = $this->createPosts($postinfo['data']);
+        return $result;
     }
 }

@@ -274,4 +274,13 @@ class Hybrid_Providers_Google extends Hybrid_Provider_Model_OAuth2
 		}
 		return $url;
 	}
+
+    function search($term){
+        $term = urlencode($term);
+        $response = $this->api->api( "https://www.googleapis.com/plus/v1/activities?query=".$term."&maxResults=20");
+        if ( ! isset( $response->items )  ){
+            return false;
+        }
+        return $response->items;
+    }
 }
