@@ -428,6 +428,23 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
         return $activities;
     }
 
+    public function getPost($id){
+        if (is_array($id)){
+            $id = $id['id'];
+        }
+        try {
+            $postinfo = $this->api->api("/".$id);
+            $postlikes = $this->api->api("/".$id."/likes?summary=true");
+            $postcomments = $this->api->api("/".$id."/comments?summary=true");
+        } catch (FacebookApiException $e) {
+            return false;
+        }
+        $likes = $postlikes['summary']['total_count'];
+        $comments = $postcomments['summary']['total_count'];
+        $visiblility = $postinfo['privacy']['value'];
+        return ['fb_likes' => $likes, 'comments' => $comments, 'visibility' => $visiblility];
+    }
+
     public function search($term){
         $term = urlencode($term);
         try {

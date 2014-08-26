@@ -266,6 +266,20 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
         return $response;
     }
 
+    public function getPost($id){
+        $response = $this->api->api("statuses/show.json?id=".$id);
+
+        if (!$response || $response->errors) {
+            if ($response->errors[0]->code == 34){
+                return ['deleted' => true];
+            }
+            return false;
+        }
+        $return['favorites'] = $response->favorite_count;
+        $return['retweet'] = $response->retweet_count;
+        return $return;
+    }
+
     function createPosts($response){
         $activities = [];
         foreach( $response as $item ){

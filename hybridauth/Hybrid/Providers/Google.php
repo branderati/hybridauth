@@ -283,4 +283,12 @@ class Hybrid_Providers_Google extends Hybrid_Provider_Model_OAuth2
         }
         return $response->items;
     }
+
+    public function getPost($id){
+        $response = $this->api->api( "https://www.googleapis.com/plus/v1/activities/".$id);
+        if ( ! isset( $response->items )  ){
+            return false;
+        }
+        return $response;
+    }
 }
