@@ -15,27 +15,38 @@ class Hybrid_Providers_Signedrequest extends Hybrid_Provider_Model
 
     function login() {
         $sharedKey = $this->config['keys']['secret'];
-        $this->user->profile->identifier = $this->params['eid'];
         $signaturePost = $this->params['signature'];
+        list($encoded_sig, $payload) = explode('.', $signaturePost, 2);
+        $data = json_decode(base64_decode(strtr($payload, '-_', '+/')), true);
+        if (!isset($data['id'])){
+            header("Location: /no_auth");
+            exit();
+        }
 
+        $this->user->profile->identifier = $data['id'];
+        unset($data['id']);
+        foreach ($data as $key => $val){
+            $this->user->profile->{$key} = $val;
+        }
         $signature = '';
         if ($this->user->profile->identifier != '') {
             $signature = base64_encode(hash_hmac('sha1', $this->user->profile->identifier, $sharedKey));
         }
 
-        $passed = false;
-        if ($signature != '' || $signaturePost != '') {
-            if ($signature === $signaturePost) {
-                $passed = true;
+        if ($signature != '' || $encoded_sig != '') {
+            if ($signature === $encoded_sig) {
+                $this->setUserConnected();
+            }
+            else{
+                header("Location: /no_auth");
+                exit();
             }
         }
+        else{
+            header("Location: /no_auth");
+            exit();
+        }
 
-        if ($passed) {
-            $this->setUserConnected();
-        }
-        else {
-            throw new Exception("Authentication failed!", 5);
-        }
 
     }
 
@@ -48,7 +59,7 @@ class Hybrid_Providers_Signedrequest extends Hybrid_Provider_Model
     }
 
     function getUserProfile() {
-        $this->user->profile->identifier = $this->params['eid'];
+        //$this->user->profile->identifier = $this->params['eid'];
         return $this->user->profile;
     }
 
