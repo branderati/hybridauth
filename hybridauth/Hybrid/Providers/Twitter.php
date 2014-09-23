@@ -173,7 +173,7 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
 				foreach( $response as $item ){ 
 					$uc = new Hybrid_User_Contact();
 
-					$uc->identifier   = (property_exists($item,'id'))?$item->id:"";
+					$uc->identifier   = (string)(property_exists($item,'id'))?$item->id:"";
 					$uc->displayName  = (property_exists($item,'name'))?$item->name:"";
 					$uc->profileURL   = (property_exists($item,'screen_name'))?("http://twitter.com/".$item->screen_name):"";
 					$uc->photoURL     = (property_exists($item,'profile_image_url'))?$item->profile_image_url:"";
