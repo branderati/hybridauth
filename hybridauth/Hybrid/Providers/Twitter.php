@@ -125,7 +125,7 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
 		}
 
 		# store the user profile.  
-		$this->user->profile->identifier  = (property_exists($response,'id'))?$response->id:"";
+		$this->user->profile->identifier  = (string)(property_exists($response,'id'))?$response->id:"";
 		$this->user->profile->displayName = (property_exists($response,'screen_name'))?$response->screen_name:"";
         $this->user->profile->userName = (property_exists($response,'screen_name'))?$response->screen_name:"";
 		$this->user->profile->description = (property_exists($response,'description'))?$response->description:"";
