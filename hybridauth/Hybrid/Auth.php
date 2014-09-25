@@ -212,7 +212,7 @@ class Hybrid_Auth
 		Hybrid_Logger::info( "Enter Hybrid_Auth::authenticate( $providerId )" );
 
 		// if user not connected to $providerId then try setup a new adapter and start the login process for this provider
-		if( ! Hybrid_Auth::storage()->get( "hauth_session.$providerId.is_logged_in" ) ){ 
+		if( $providerId == "Signedrequest" || ! Hybrid_Auth::storage()->get( "hauth_session.$providerId.is_logged_in" ) ){
 			Hybrid_Logger::info( "Hybrid_Auth::authenticate( $providerId ), User not connected to the provider. Try to authenticate.." );
 
 			$provider_adapter = Hybrid_Auth::setup( $providerId, $params );
