@@ -286,13 +286,12 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
             $ua = new Hybrid_User_Activity();
 
             $ua->id                 = (property_exists($item,'id'))?$item->id:"";
-            $ua->date               = (property_exists($item,'created_at'))?strtotime($item->created_at):"";
-            $ua->text               = (property_exists($item,'text'))?$item->text:"";
+            $ua->created               = (property_exists($item,'created_at'))?strtotime($item->created_at):"";
+            $ua->message               = (property_exists($item,'text'))?$item->text:"";
             $ua->geo                = (property_exists($item,'geo'))?$item->geo:"";
             $ua->coordinates        = (property_exists($item,'coordinates'))?$item->coordinates:"";
-            $ua->retweets           = (property_exists($item,'retweet_count'))?$item->retweet_count:"";
-            $ua->favorites          = (property_exists($item,'favorite_count'))?$item->favorite_count:"";
-            $ua->text               = (property_exists($item,'text'))?$item->text:"";
+            $ua->shares           = (property_exists($item,'retweet_count'))?$item->retweet_count:"";
+            $ua->likes          = (property_exists($item,'favorite_count'))?$item->favorite_count:"";
             $ua->media = (isset($response->statuses[0]->entities->media[0]->media_url)? $response->statuses[0]->entities->media[0]->media_url: NULL);
             $ua->user->identifier   = (property_exists($item->user,'id'))?$item->user->id:"";
             $ua->user->displayName  = (property_exists($item->user,'name'))?$item->user->name:"";

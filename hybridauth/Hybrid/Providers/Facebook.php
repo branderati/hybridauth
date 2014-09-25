@@ -388,22 +388,22 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
             $ua = new Hybrid_User_Activity();
 
             $ua->id = (array_key_exists("id", $item)) ? $item["id"] : "";
-            $ua->date = (array_key_exists("created_time", $item)) ? strtotime($item["created_time"]) : "";
+            $ua->created = (array_key_exists("created_time", $item)) ? strtotime($item["created_time"]) : "";
 
             if ($item["type"] == "video") {
-                $ua->text = (array_key_exists("link", $item)) ? $item["link"] : "";
+                $ua->message = (array_key_exists("link", $item)) ? $item["link"] : "";
             }
 
             if ($item["type"] == "link") {
-                $ua->text = (array_key_exists("link", $item)) ? $item["link"] : "";
+                $ua->message = (array_key_exists("link", $item)) ? $item["link"] : "";
             }
 
             if (empty($ua->text) && isset($item["story"])) {
-                $ua->text = (array_key_exists("link", $item)) ? $item["link"] : "";
+                $ua->message = (array_key_exists("link", $item)) ? $item["link"] : "";
             }
 
             if (empty($ua->text) && isset($item["message"])) {
-                $ua->text = (array_key_exists("message", $item)) ? $item["message"] : "";
+                $ua->message = (array_key_exists("message", $item)) ? $item["message"] : "";
             }
             if (isset($item['picture'])){
                 $ua->media = $item['picture'];
@@ -412,11 +412,18 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
                 $ua->likes = count($item['likes']['data']);
                 $ua->likes_users = $item['likes']['data'];
             }
+            if (isset($item["comments"])) {
+                $ua->comments = count($item['comments']['data']);
+                $ua->comments_users = $item['comments']['data'];
+            }
             else{
                 $ua->likes = 0;
             }
+            if (isset($item['privacy'])){
+                $ua->visibility = $item['privacy']['value'];
+            }
 
-            if (!empty($ua->text)) {
+            if (!empty($ua->message)) {
                 $ua->user->identifier = (array_key_exists("id", $item["from"])) ? $item["from"]["id"] : "";
                 $ua->user->displayName = (array_key_exists("name", $item["from"])) ? $item["from"]["name"] : "";
                 $ua->user->profileURL = "https://www.facebook.com/profile.php?id=" . $ua->user->identifier;
