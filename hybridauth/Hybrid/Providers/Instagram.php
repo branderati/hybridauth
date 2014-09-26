@@ -66,8 +66,46 @@ class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
         if (!$response) {
             return false;
         }
+        $response = $this->createPosts($response->data);
 
-        return $response->data;
+        return $response;
+    }
+
+    function createPosts($stream){
+
+        foreach ($stream as $item) {
+            $ua = new Hybrid_User_Activity();
+
+            $ua->identifier = $item->id;
+            $ua->created = $item->created_time;
+
+            if ($item->caption){
+                $ua->message = $item->caption->text;
+            }
+            if ($item->images){
+                $ua->media = $item->images->standard_resolution->url;
+            }
+            if ($item->likes) {
+                $ua->likes = $item->likes->count;
+                $ua->likes_users = $item->likes->data;
+            }
+            if ($item->comments) {
+                $ua->comments = $item->comments->count;
+                $ua->comments_users = $item->comments->data;
+            }
+            else{
+                $ua->likes = 0;
+            }
+            $ua->url = $item->link;
+            if (!empty($ua->message)) {
+
+                $ua->user->displayName = $item->user->full_name;
+                $ua->user->photoURL = $item->user->profile_picture;
+
+                $activities[] = $ua;
+            }
+        }
+        return $activities;
     }
 
     function search($tag) {
