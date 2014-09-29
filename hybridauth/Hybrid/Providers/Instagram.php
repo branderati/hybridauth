@@ -76,7 +76,7 @@ class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
         foreach ($stream as $item) {
             $ua = new Hybrid_User_Activity();
 
-            $ua->identifier = $item->id;
+            $ua->id = $item->id;
             $ua->created = $item->created_time;
 
             if ($item->caption){
