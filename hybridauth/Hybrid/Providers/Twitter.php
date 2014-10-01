@@ -275,8 +275,8 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
             }
             return false;
         }
-        $return['favorites'] = $response->favorite_count;
-        $return['retweet'] = $response->retweet_count;
+        $return['likes'] = $response->favorite_count;
+        $return['shares'] = $response->retweet_count;
         return $return;
     }
 
