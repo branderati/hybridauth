@@ -213,7 +213,7 @@ class Hybrid_Providers_LinkedIn extends Hybrid_Provider_Model
         $response = $this->api->likes($id);
         $xml = simplexml_load_string($response['linkedin']);
         $total = (string)$xml->attributes()->total;
-        return ['li_likes' => (int)$total];
+        return ['likes' => (int)$total];
     }
 
     /**
