@@ -449,7 +449,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
         $likes = $postlikes['summary']['total_count'];
         $comments = $postcomments['summary']['total_count'];
         $visiblility = $postinfo['privacy']['value'];
-        return ['fb_likes' => $likes, 'comments' => $comments, 'visibility' => $visiblility];
+        return ['likes' => $likes, 'comments' => $comments, 'visibility' => $visiblility];
     }
 
     public function search($term){
