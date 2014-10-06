@@ -257,8 +257,7 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
  	}
 
     function search($tag) {
-        $response = $this->api->api("search/tweets.json?q=".$tag);
-
+        $response = $this->api->api("search/tweets.json?q=".urlencode($tag));
         if (!$response || !$response->statuses) {
             return false;
         }
