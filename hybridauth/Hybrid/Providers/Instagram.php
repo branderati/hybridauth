@@ -77,7 +77,7 @@ class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
             $ua = new Hybrid_User_Activity();
 
             $ua->id = $item->id;
-            $ua->created = $item->created_time;
+            $ua->created = (int)$item->created_time;
 
             if ($item->caption){
                 $ua->message = $item->caption->text;

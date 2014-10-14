@@ -388,7 +388,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
             $ua = new Hybrid_User_Activity();
 
             $ua->id = (array_key_exists("id", $item)) ? $item["id"] : "";
-            $ua->created = (array_key_exists("created_time", $item)) ? strtotime($item["created_time"]) : "";
+            $ua->created = (int)(array_key_exists("created_time", $item)) ? strtotime($item["created_time"]) : "";
 
             if ($item["type"] == "video") {
                 $ua->message = (array_key_exists("link", $item)) ? $item["link"] : "";
