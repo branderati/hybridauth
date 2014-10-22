@@ -109,18 +109,19 @@ class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
     }
 
     function search($tag) {
-        $countInfo = $this->api->api("/tags/".$tag);
-        $count = $countInfo->data->media_count;
+        if (empty($tag)){
+            return false;
+        };
+
+        $tag = str_replace("#", "", $tag);
+        //$countInfo = $this->api->api("/tags/".$tag);
+        //$count = $countInfo->data->media_count;
         $response = $this->api->api("/tags/".$tag."/media/recent");
 
-        if ($response->meta->code != 200) {
-            throw new Exception("User profile request failed! {$this->providerId} returned an invalid response.", 6);
-        }
 
-        if (!$response) {
+        if (!$response || $response->meta->code != 200) {
             return false;
         }
-
         return $response->data;
     }
 }
