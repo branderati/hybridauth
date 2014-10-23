@@ -339,7 +339,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
     function getUserActivity($stream) {
         try {
             if ($stream == "me") {
-                $response = $this->api->api('/me/feed');
+                $response = $this->api->api('/me/posts');
             }
             else {
                 $response = $this->api->api('/me/home');
@@ -385,6 +385,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
 
     private function createPosts($data){
         foreach ($data as $item) {
+            print_r($item);
             $ua = new Hybrid_User_Activity();
 
             $ua->id = (array_key_exists("id", $item)) ? $item["id"] : "";
