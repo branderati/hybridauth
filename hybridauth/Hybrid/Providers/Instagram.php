@@ -97,6 +97,7 @@ class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
                 $ua->likes = 0;
             }
             $ua->url = $item->link;
+            $ua->created = $item->created_time;
             if (!empty($ua->message)) {
 
                 $ua->user->displayName = $item->user->full_name;
@@ -122,6 +123,7 @@ class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
         if (!$response || $response->meta->code != 200) {
             return false;
         }
-        return $response->data;
+        $result = $this->createPosts($response->data);
+        return $result;
     }
 }
