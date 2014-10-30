@@ -285,6 +285,7 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
             $ua = new Hybrid_User_Activity();
 
             $ua->id                 = (string)(property_exists($item,'id_str'))?$item->id_str:"";
+            $ua->url = "https://twitter.com/".$item->user->screen_name."/status/".$ua->id ;
             $ua->created               = (int)(property_exists($item,'created_at'))?strtotime($item->created_at):"";
             $ua->message               = (property_exists($item,'text'))?$item->text:"";
             $ua->geo                = (property_exists($item,'geo'))?$item->geo:"";
@@ -296,7 +297,6 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
             $ua->user->displayName  = (property_exists($item->user,'name'))?$item->user->name:"";
             $ua->user->profileURL   = (property_exists($item->user,'screen_name'))?("http://twitter.com/".$item->user->screen_name):"";
             $ua->user->photoURL     = (property_exists($item->user,'profile_image_url'))?$item->user->profile_image_url:"";
-
             $activities[] = $ua;
         }
         return $activities;

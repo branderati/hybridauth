@@ -388,6 +388,8 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
             $ua = new Hybrid_User_Activity();
 
             $ua->id = (array_key_exists("id", $item)) ? $item["id"] : "";
+            $url_parts = explode("_", $ua->id);
+            $ua->url = "https://facebook.com/".$url_parts[0]."/posts/".$url_parts[1];
             $ua->created = (int)(array_key_exists("created_time", $item)) ? strtotime($item["created_time"]) : "";
 
             if ($item["type"] == "video") {
@@ -437,9 +439,9 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
                 $ua->user->displayName = (array_key_exists("name", $item["from"])) ? $item["from"]["name"] : "";
                 $ua->user->profileURL = "https://www.facebook.com/profile.php?id=" . $ua->user->identifier;
                 $ua->user->photoURL = "https://graph.facebook.com/" . $ua->user->identifier . "/picture?type=square";
-
                 $activities[] = $ua;
             }
+
         }
         return $activities;
     }
