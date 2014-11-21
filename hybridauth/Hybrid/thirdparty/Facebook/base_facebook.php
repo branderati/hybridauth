@@ -974,7 +974,7 @@ abstract class BaseFacebook
     }
       //BRANDERATI CHANGE: We'll only ever use https
   if (isset($params['redirect_uri'] )) {
-      $params['redirect_uri'] = str_replace("http", "https", $params['redirect_uri']);
+      $params['redirect_uri'] = str_replace("http://", "https://", $params['redirect_uri']);
   }
     $opts = self::$CURL_OPTS;
     if ($this->getFileUploadSupport()) {
