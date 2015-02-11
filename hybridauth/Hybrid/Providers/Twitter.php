@@ -292,7 +292,7 @@ class Hybrid_Providers_Twitter extends Hybrid_Provider_Model_OAuth1
             $ua->coordinates        = (property_exists($item,'coordinates'))?$item->coordinates:"";
             $ua->shares           = (property_exists($item,'retweet_count'))?$item->retweet_count:"";
             $ua->likes          = (property_exists($item,'favorite_count'))?$item->favorite_count:"";
-            $ua->media = (isset($response->statuses[0]->entities->media[0]->media_url)? $response->statuses[0]->entities->media[0]->media_url: NULL);
+            $ua->media = (isset($item->entities->media[0]->media_url)? $item->entities->media[0]->media_url: NULL);
             $ua->user->identifier   = (property_exists($item->user,'id'))?$item->user->id:"";
             $ua->user->displayName  = (property_exists($item->user,'name'))?$item->user->name:"";
             $ua->user->profileURL   = (property_exists($item->user,'screen_name'))?("http://twitter.com/".$item->user->screen_name):"";
